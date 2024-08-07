@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:portugalgo/auth/verify_email.dart';
 
 import '../constants/colors.dart';
 import '../constants/sizes.dart';
@@ -36,31 +38,43 @@ class signupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Padding(padding: const EdgeInsets.all(TSizes.defaultSpace),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          //title
-          Text(TTexts.signupTitle,style: Theme.of(context).textTheme.headlineMedium),
-          const SizedBox(height: TSizes.spaceBtwSections,),
-    
-    
-          //form
-          TsSignUpForm(dark: dark),
-                          const SizedBox(height: TSizes.spaceBtwSections),
-    
-          ///divider
-          const TFormDivider(dividerText:TTexts.orSignUpWith),
-          const SizedBox(height: TSizes.spaceBtwSections),
-          const footer()
-    
-        ],
-      ),  
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Determine if the screen width is larger than a certain threshold
+          bool isLargeScreen = constraints.maxWidth > 600;
+
+          return Padding(
+            padding: isLargeScreen
+                ? EdgeInsets.symmetric(
+                    horizontal: constraints.maxWidth * 0.2, // 20% padding on each side
+                    vertical: TSizes.defaultSpace)
+                : const EdgeInsets.all(TSizes.defaultSpace),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Title
+                Text(
+                  TTexts.signupTitle,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                const SizedBox(height: TSizes.spaceBtwSections),
+
+                // Form
+                TsSignUpForm(dark: dark),
+                const SizedBox(height: TSizes.spaceBtwSections),
+
+                // Divider
+                const TFormDivider(dividerText: TTexts.orSignUpWith),
+                const SizedBox(height: TSizes.spaceBtwSections),
+                const footer(),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
 }
-
 class TsSignUpForm extends StatelessWidget {
   const TsSignUpForm({
     super.key,
@@ -154,7 +168,7 @@ class TsSignUpForm extends StatelessWidget {
                 termsandcondtions(dark: dark),
               const SizedBox(height: TSizes.spaceBtwSections),
               //signupbutton
-              SizedBox(width: double.infinity,child: ElevatedButton(onPressed: ()=>{},child: const Text(TTexts.createAccount),),)                                         
+              SizedBox(width: double.infinity,child: ElevatedButton(onPressed: ()=>Get.to(()=>const verifyEmailScreen()),child: const Text(TTexts.createAccount),),)                                         
                ]
         
     ),
