@@ -52,6 +52,7 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
+    
   }
 }
 
@@ -174,7 +175,7 @@ class loginForm extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () => Get.to(() => SettingsScreen()),
+                onPressed: () => {Get.to(() => SettingsScreen())},
                 child: const Text(TTexts.signIn),
               ),
             ),

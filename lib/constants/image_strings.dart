@@ -11,6 +11,8 @@ class TImages {
   // -- Social Logos
   static const String google = "assets/logos/google-icon.png";
   static const String hotmail = "assets/logos/hotmail.png";
+  static const String apple = "assets/logos/apple.png";
+
 
   // -- Category Icons
   static const String sportIcon = "assets/icons/categories/icons8-bowling-64.png";
