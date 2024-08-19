@@ -18,8 +18,9 @@ import 'settingsmenutile.dart';
 
 class SettingsScreen extends StatelessWidget {
   final GoogleSignInAccount? user;
+  final User? emailUser;
 
-  SettingsScreen({Key? key, this.user}) : super(key: key);
+  SettingsScreen({Key? key, this.user,this.emailUser}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +63,7 @@ class SettingsScreen extends StatelessWidget {
                           height: TSizes.spaceBtwSections,
                         ),
                         // Profile card, pass the user or null
-                        userprofiletile(user: user),
+                        userprofiletile(googleuser: user,emailUser:emailUser),
                         const SizedBox(
                           height: TSizes.spaceBtwSections,
                         )
@@ -135,14 +136,14 @@ class SettingsScreen extends StatelessWidget {
   Widget getTile(int index) {
     List<TsettingsMenuTile> tiles = [
       TsettingsMenuTile(
-        icon: Iconsax.safe_home,
-        title: 'My Properties',
-        subtitle: 'See your listed properties',
+        icon: Iconsax.building_4,
+        title: 'My Advertisements',
+        subtitle: 'See your listed property',
         onTap: () {},
       ),
       TsettingsMenuTile(
-        icon: Iconsax.home4,
-        title: 'List property',
+        icon: Iconsax.folder_add4,
+        title: 'Add Advertisement',
         subtitle: 'Add a new property',
         onTap: ()=>Get.to(()=>ListingPage()),
       ),
@@ -170,12 +171,16 @@ class SettingsScreen extends StatelessWidget {
 }
 
 class userprofiletile extends StatelessWidget {
-  final GoogleSignInAccount? user;
+  final GoogleSignInAccount? googleuser;
+  final User? emailUser;
 
-  userprofiletile({super.key, this.user});
+  userprofiletile({super.key, this.googleuser,this.emailUser});
 
   @override
   Widget build(BuildContext context) {
+        final displayName = googleuser?.displayName ?? emailUser?.firstName ?? 'Guest user';
+    final email = googleuser?.email ?? emailUser?.email ?? 'guest@example.com';
+
     return ListTile(
       leading: circularImage(
         image: TImages.user,
@@ -184,21 +189,21 @@ class userprofiletile extends StatelessWidget {
         padding: 0,
       ),
       title: Text(
-        user?.displayName ?? 'Guest User',
+        displayName,
         style: Theme.of(context)
             .textTheme
             .headlineSmall!
             .apply(color: TColors.white),
       ),
       subtitle: Text(
-        user?.email ?? 'guest@example.com',
+        email,
         style: Theme.of(context)
             .textTheme
             .bodyMedium!
             .apply(color: TColors.white),
       ),
       trailing: IconButton(
-        onPressed: () => Get.to(() => const ProfileScreen()),
+        onPressed: () => Get.to(() =>  ProfileScreen(googleuser: googleuser,emailUser: emailUser,)),
         icon: const Icon(Iconsax.edit, color: TColors.white),
       ),
     );

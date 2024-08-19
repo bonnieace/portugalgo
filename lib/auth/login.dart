@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:portugalgo/auth/signup.dart';
 import 'package:portugalgo/profile/settings/settings.dart';
+import 'package:http/http.dart' as http;
+
 
 import '../constants/colors.dart';
 import '../constants/image_strings.dart';
@@ -44,7 +48,7 @@ class LoginScreen extends StatelessWidget {
                   divider(dark: dark),
                   const SizedBox(height: TSizes.spaceBtwItems),
                   // footer
-                  const footer(),
+                  const Footer(),
                 ],
               ),
             );
@@ -128,6 +132,9 @@ class loginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController emailController = TextEditingController();
+    final TextEditingController passwordController = TextEditingController();
+
     return Form(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: TSizes.spaceBtwSections),
@@ -135,6 +142,7 @@ class loginForm extends StatelessWidget {
           children: [
             // email
             TextFormField(
+              controller: emailController,
               validator: (value) => TValidator.validateEmail(value),
               decoration: const InputDecoration(
                 prefixIcon: Icon(Iconsax.direct_right),
@@ -144,6 +152,7 @@ class loginForm extends StatelessWidget {
             // password
             const SizedBox(height: TSizes.spaceBtwInputFields),
             TextFormField(
+              controller: passwordController,
               validator: (value) => TValidator.validatePassword(value),
               decoration: InputDecoration(
                 labelText: TTexts.password,
@@ -159,12 +168,7 @@ class loginForm extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    // Obx(() => Checkbox(value: controller.rememberMe.value, onChanged: (value) { controller.rememberMe.value = !controller.rememberMe.value; })),
-                    const Text(TTexts.rememberMe),
-                  ],
-                ),
+                //const Text(TTexts.rememberMe),
                 TextButton(
                   onPressed: () => Get.to(() => const ForgetPassword()),
                   child: const Text(TTexts.forgetPassword),
@@ -175,7 +179,11 @@ class loginForm extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () => {Get.to(() => SettingsScreen())},
+                onPressed: () => _login(
+                  context,
+                  emailController.text,
+                  passwordController.text,
+                ),
                 child: const Text(TTexts.signIn),
               ),
             ),
@@ -192,4 +200,79 @@ class loginForm extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> _login(BuildContext context, String email, String password) async {
+  final url = 'https://api.global-software.org/management/user/get?email=$email&password=$password';
+
+  try {
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Api-Key': '6b21ac76-6753-4fc7-b5f8-2e93881b577c',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Check if the response is JSON or plain text
+      final contentType = response.headers['content-type'];
+      if (contentType != null && contentType.contains('application/json')) {
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+
+        // Extract and print the values with null checks
+        final String anaEmail = responseData['ana_email'] ?? 'N/A';
+        final String anaId = responseData['ana_id'] ?? 'N/A';
+        final String anaNome = responseData['ana_nome'] ?? 'N/A';
+        final String anaCognome = responseData['ana_cognome'] ?? 'N/A';
+
+        final emailUser = User(
+          email: anaEmail,
+          id: anaId,
+          firstName: anaNome,
+          lastName: anaCognome,
+        );
+
+        print('Email: $anaEmail');
+        print('First Name: $anaNome');
+        print('Last Name: $anaCognome');
+        print('ID: $anaId');
+
+        // Navigate to the settings screen (or wherever necessary)
+        Get.to(() => SettingsScreen(emailUser: emailUser));
+      } else {
+        // Handle non-JSON response (plain text or other formats)
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Unexpected response format: ${response.body}')),
+        );
+      }
+    } else {
+      // Handle login failure
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Login failed. Please try again.')),
+      );
+    }
+  } catch (e) {
+    // Handle exceptions (network errors, JSON parsing errors, etc.)
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('An error occurred: $e')),
+      
+    );
+    print(e);
+  }
+}
+
+
+class User {
+  final String email;
+  final String id;
+  final String firstName;
+  final String lastName;
+
+  User({
+    required this.email,
+    required this.id,
+    required this.firstName,
+    required this.lastName,
+  });
 }

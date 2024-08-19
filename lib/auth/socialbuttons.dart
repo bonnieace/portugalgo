@@ -7,68 +7,112 @@ import '../constants/colors.dart';
 import '../constants/image_strings.dart';
 import '../constants/sizes.dart';
 
-
-class footer extends StatelessWidget {
-  const footer({
-    super.key,
-  });
+class Footer extends StatelessWidget {
+  const Footer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
       children: [
-        Container(
-          decoration: BoxDecoration(border: Border.all(color: TColors.grey),borderRadius: BorderRadius.circular(100)),
-          child: 
-          
-          IconButton(
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(horizontal: TSizes.lg, vertical: TSizes.md),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10), // Rounded corners like in the image
+                side: BorderSide(color: TColors.grey), // Border color
+              ),
+              backgroundColor: Colors.white, // Button background color
+              alignment: Alignment.centerLeft, // Align content to the start
+            ),
             onPressed: googlesignin,
             icon: const Image(
-              width:TSizes.iconMd,
+              width: TSizes.iconMd,
               height: TSizes.iconMd,
-              image: AssetImage(TImages.google))),
+              image: AssetImage(TImages.google),
+            ),
+            label: const Align(
+              alignment: Alignment.centerLeft,
+              child: Center(
+                child: Text(
+                  'Google',
+                  style: TextStyle(color: Colors.black), // Text color
+                ),
+              ),
+            ),
+          ),
         ),
-        const SizedBox(width: TSizes.spaceBtwItems,),
-        Container(
-          decoration: BoxDecoration(border: Border.all(color: TColors.grey),borderRadius: BorderRadius.circular(100)),
-          child: 
-          
-          IconButton(
+        const SizedBox(height: TSizes.spaceBtwItems,),
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(horizontal: TSizes.lg, vertical: TSizes.md),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10), // Rounded corners like in the image
+                side: BorderSide(color: TColors.grey), // Border color
+              ),
+              backgroundColor: Colors.white, // Button background color
+              alignment: Alignment.centerLeft, // Align content to the start
+            ),
             onPressed: (){},
             icon: const Image(
-              width:TSizes.iconMd,
+              width: TSizes.iconMd,
               height: TSizes.iconMd,
-              image: AssetImage(TImages.hotmail
-            
-            ))),
+              image: AssetImage(TImages.hotmail),
+            ),
+            label: const Align(
+              alignment: Alignment.centerLeft,
+              child: Center(
+                child: Text(
+                  'Microsoft',
+                  style: TextStyle(color: Colors.black), // Text color
+                ),
+              ),
+            ),
+          ),
         ),
-        const SizedBox(width: TSizes.spaceBtwItems,),
-        Container(
-          decoration: BoxDecoration(border: Border.all(color: TColors.grey),borderRadius: BorderRadius.circular(100)),
-          child: 
-          
-          IconButton(
+        const SizedBox(height: TSizes.spaceBtwItems,),
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(horizontal: TSizes.lg, vertical: TSizes.md),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10), // Rounded corners like in the image
+                side: BorderSide(color: TColors.grey), // Border color
+              ),
+              backgroundColor: Colors.white, // Button background color
+              alignment: Alignment.centerLeft, // Align content to the start
+            ),
             onPressed: (){},
             icon: const Image(
-              width:TSizes.iconMd,
+              width: TSizes.iconMd,
               height: TSizes.iconMd,
-              image: AssetImage(TImages.appleLogo
-            
-            ))),
+              image: AssetImage(TImages.appleLogo),
+            ),
+            label: const Align(
+              alignment: Alignment.centerLeft,
+              child: Center(
+                child: Text(
+                  'Apple',
+                  style: TextStyle(color: Colors.black), // Text color
+                ),
+              ),
+            ),
+          ),
         ),
       ],
     );
   }
-  Future googlesignin() async{
-    final user =await GoogleSignInApi.login();
-    if (user == null){
-      print('error');
-    }
-    else{
-          Get.to(()=>SettingsScreen(user:user));
 
+  Future googlesignin() async {
+    final user = await GoogleSignInApi.login();
+    if (user == null) {
+      print('error');
+    } else {
+      Get.to(() => SettingsScreen(user: user));
     }
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:portugalgo/listing/locationdetails.dart';
 import 'package:portugalgo/listing/maplocation.dart';
 
 import '../constants/image_strings.dart';
@@ -38,29 +39,27 @@ class ListingPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "It's easy to get started on Portugalgo",
+                  "It's easy to get started!What would you like to advertise?",
                   style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.blue),
                 ),
                 SizedBox(height: 20),
                 Expanded(
                   child: ListView(
                     children: [
-                      buildStep(
-                        "Tell us about your space",
-                        "Share some basic information, like the location and how many guests can stay.",
-                        Iconsax.house,
+                      buildOption(
+                        "Accomodation",
+                        "List your house or apartment.",
+                        Iconsax.building_3,
                       ),
-                      SizedBox(height: 16),
-                      buildStep(
-                        "Make it stand out",
-                        "Add some photos, a title, and a description.",
-                        Iconsax.image,
+                      buildOption(
+                        "Activities",
+                        "Add tours and things to do.",
+                        Iconsax.activity5,
                       ),
-                      SizedBox(height: 16),
-                      buildStep(
-                        "Complete your listing and publish it",
-                        "Choose an introductory price, check a few details, and publish your ad.",
-                        Iconsax.check,
+                      buildOption(
+                        "Vehicles",
+                        "Add cars,bikes,boats etc..",
+                        Iconsax.car,
                       ),
                     ],
                   ),
@@ -109,6 +108,31 @@ class ListingPage extends StatelessWidget {
       ),
     );
   }
+    Widget buildOption(String title, String subtitle, IconData icon) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: ListTile(
+          leading: Icon(icon, size: 40, color: Colors.blue),
+          title: Text(
+            title,
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          subtitle: Text(
+            subtitle,
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+          ),
+          onTap: () {
+            // Select this option
+          },
+        ),
+      ),
+    );
+  } 
 }
 
 
@@ -273,7 +297,7 @@ class _SpaceDetailsPageState extends State<SpaceDetailsPage> {
                 Expanded(
                   child: ListView(
                     children: [
-                      buildCounterTile("Guests", guests, (value) {
+                      buildCounterTile("Max Occupancy", guests, (value) {
                         setState(() {
                           guests = value;
                         });
@@ -491,7 +515,7 @@ class _AmenitiesSelectionPageState extends State<AmenitiesSelectionPage> {
                 ElevatedButton(
                   onPressed: () {
                     // Navigate to the next page
-                    Get.to(()=>LocationSelectionPage());
+                    Get.to(()=>LocationDetailsScreen());
                   },
                   child: Text("Next"),
                 ),
