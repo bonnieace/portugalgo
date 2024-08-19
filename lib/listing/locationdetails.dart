@@ -84,9 +84,9 @@ class LocationForm extends StatelessWidget {
     print('Country: $country');
 
     // Display a success message, navigate to another screen, etc.
-   /* ScaffoldMessenger.of(context).showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Location submitted successfully!')),
-    );*/
+    );
   }
 
   @override

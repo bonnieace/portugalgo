@@ -243,7 +243,7 @@ Future<void> _login(BuildContext context, String email, String password) async {
       } else {
         // Handle non-JSON response (plain text or other formats)
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Unexpected response format: ${response.body}')),
+          SnackBar(content: Text(' ${response.body}')),
         );
       }
     } else {

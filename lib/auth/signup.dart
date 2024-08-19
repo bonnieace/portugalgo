@@ -122,16 +122,16 @@ class _TsSignUpFormState extends State<TsSignUpForm> {
         }
         else {
         // Handle the error, show a dialog, toast, etc.
-        /*ScaffoldMessenger.of(context).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
            SnackBar(content: Text(responseBody)),
-        );*/
+        );
       }
         
       } else {
         // Handle the error, show a dialog, toast, etc.
-       /* ScaffoldMessenger.of(context).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Failed to create account')),
-        );*/
+        );
       }
     }
   }
