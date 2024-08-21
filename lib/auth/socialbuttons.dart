@@ -6,12 +6,19 @@ import 'package:portugalgo/profile/settings/settings.dart';
 import '../constants/colors.dart';
 import '../constants/image_strings.dart';
 import '../constants/sizes.dart';
+import '../helpers/network_manager.dart';
+import 'authentication/auth_repository.dart';
+import 'socialsignin/logincontroller.dart';
+import 'socialsignin/usercontroller.dart';
 
 class Footer extends StatelessWidget {
   const Footer({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final controller=Get.put(LoginController());
+
+
     return Column(
       children: [
         SizedBox(
@@ -115,4 +122,6 @@ class Footer extends StatelessWidget {
       Get.to(() => SettingsScreen(user: user));
     }
   }
+
+
 }

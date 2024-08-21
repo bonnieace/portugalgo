@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:portugalgo/auth/signup.dart';
+import 'package:portugalgo/auth/signup/signup.dart';
 import 'package:portugalgo/profile/settings/settings.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,10 +13,12 @@ import '../constants/image_strings.dart';
 import '../constants/sizes.dart';
 import '../constants/text_strings.dart';
 import '../helpers/helper_functions.dart';
+import '../helpers/network_manager.dart';
 import '../validators/validation.dart';
 import 'forget_password.dart';
 import 'socialbuttons.dart';
 import 'spacing_styles.dart';
+import 'user.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -237,6 +239,9 @@ Future<void> _login(BuildContext context, String email, String password) async {
         print('First Name: $anaNome');
         print('Last Name: $anaCognome');
         print('ID: $anaId');
+              TLoaders.successSnackBar(title: 'Login Success',message:'Continue to manage your advertisements');
+          
+
 
         // Navigate to the settings screen (or wherever necessary)
         Get.to(() => SettingsScreen(emailUser: emailUser));
@@ -260,19 +265,4 @@ Future<void> _login(BuildContext context, String email, String password) async {
     );
     print(e);
   }
-}
-
-
-class User {
-  final String email;
-  final String id;
-  final String firstName;
-  final String lastName;
-
-  User({
-    required this.email,
-    required this.id,
-    required this.firstName,
-    required this.lastName,
-  });
 }

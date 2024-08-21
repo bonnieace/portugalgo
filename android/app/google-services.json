@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "888379392327",
+    "project_id": "sokoni-3f47e",
+    "storage_bucket": "sokoni-3f47e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:888379392327:android:6f43d3dc029326ca440c62",
+        "android_client_info": {
+          "package_name": "com.example.portugalgo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "888379392327-53g09jf28p0m9p1ttbiae2ab2k8d8im1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.portugalgo",
+            "certificate_hash": "574bb02680cace9a4fcb3745cc5c56540b7804d3"
+          }
+        },
+        {
+          "client_id": "888379392327-rgd4ojp1g2jin8jg97m7vc3s6osvns7l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9qIlj6E1bhfMAbXvR1sp6yrgHeGTJyVs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "888379392327-rgd4ojp1g2jin8jg97m7vc3s6osvns7l.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "888379392327-ieg2177qa76a0732o3pehfi3fel4hopm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.portugalgo"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:888379392327:android:b4e5e099ba9ba280440c62",
+        "android_client_info": {
+          "package_name": "com.example.t_store"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "888379392327-6h3r9gl8mk2tauh3f5g2vqsprdkednro.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.t_store",
+            "certificate_hash": "574bb02680cace9a4fcb3745cc5c56540b7804d3"
+          }
+        },
+        {
+          "client_id": "888379392327-rgd4ojp1g2jin8jg97m7vc3s6osvns7l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9qIlj6E1bhfMAbXvR1sp6yrgHeGTJyVs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "888379392327-rgd4ojp1g2jin8jg97m7vc3s6osvns7l.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "888379392327-ieg2177qa76a0732o3pehfi3fel4hopm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.portugalgo"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

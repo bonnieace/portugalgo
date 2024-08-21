@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:portugalgo/auth/login.dart';
 
-import '../constants/image_strings.dart';
-import '../constants/sizes.dart';
-import '../constants/text_strings.dart';
-import '../helpers/helper_functions.dart';
+import '../../constants/image_strings.dart';
+import '../../constants/sizes.dart';
+import '../../constants/text_strings.dart';
+import '../../helpers/helper_functions.dart';
+import '../authentication/auth_repository.dart';
+import 'verify_email_controller.dart';
 
 class verifyEmailScreen extends StatelessWidget {
   const verifyEmailScreen({super.key, this.email});
@@ -14,11 +16,13 @@ class verifyEmailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller=Get.put(verifyEmailController());
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         actions: [
-          IconButton(onPressed: () => {}, icon: const Icon(CupertinoIcons.clear))
+          IconButton(onPressed: () => AuthenticationRepository.instance.logout, icon: const Icon(CupertinoIcons.clear))
         ],
       ),
       body: SingleChildScrollView(
@@ -69,7 +73,7 @@ class verifyEmailScreen extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () => Get.to(() => const LoginScreen()),
+                      onPressed: () => controller.checkemailverificationstatus(),
                       child: Text(TTexts.tContinue),
                     ),
                   ),
@@ -77,7 +81,7 @@ class verifyEmailScreen extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: TextButton(
-                      onPressed: () => {},
+                      onPressed: ()=>controller.sendEmailVerification(),
                       child: const Text(TTexts.resendEmail),
                     ),
                   ),

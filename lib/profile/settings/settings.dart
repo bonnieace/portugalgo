@@ -7,6 +7,7 @@ import 'package:portugalgo/listing/createlisting.dart';
 
 import '../../appbar/appbar.dart';
 import '../../auth/socialsignin/google.dart';
+import '../../auth/user.dart';
 import '../../constants/colors.dart';
 import '../../constants/image_strings.dart';
 import '../../constants/sizes.dart';

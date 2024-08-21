@@ -4,6 +4,7 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:portugalgo/listing/locationdetails.dart';
 import 'package:portugalgo/listing/maplocation.dart';
+import 'package:portugalgo/listing/vehicles/vehicles.dart';
 
 import '../constants/image_strings.dart';
 import '../helpers/helper_functions.dart';
@@ -65,15 +66,7 @@ class ListingPage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 20),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Get.to(() => SpaceTypePage());
-                    },
-                    child: Text("Begin"),
-                  ),
-                ),
+               
               ],
             ),
           ),
@@ -128,6 +121,12 @@ class ListingPage extends StatelessWidget {
           ),
           onTap: () {
             // Select this option
+            if (title == "Accomodation") {
+            Get.to(() => SpaceTypePage());
+          }
+          if (title == "Vehicles") {
+            Get.to(() => vehicles());
+          }
           },
         ),
       ),
@@ -136,21 +135,28 @@ class ListingPage extends StatelessWidget {
 }
 
 
-class SpaceTypePage extends StatelessWidget {
+class SpaceTypePage extends StatefulWidget {
+  @override
+  _SpaceTypePageState createState() => _SpaceTypePageState();
+}
+
+class _SpaceTypePageState extends State<SpaceTypePage> {
+  String? selectedTitle;
+  Map<String, String> selectedOptions = {};
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         bool isLargeScreen = constraints.maxWidth > 600;
-            final dark = THelperFunctions.isDarkMode(context);
-
+        final dark = THelperFunctions.isDarkMode(context);
 
         return Scaffold(
           appBar: AppBar(
-             leading: Image(
+            leading: Image(
               height: 150,
-          image: AssetImage(dark ? TImages.lightAppLogo : TImages.darkAppLogo),
-        ),
+              image: AssetImage(dark ? TImages.lightAppLogo : TImages.darkAppLogo),
+            ),
             backgroundColor: Colors.white,
             elevation: 0,
             automaticallyImplyLeading: false,
@@ -158,10 +164,10 @@ class SpaceTypePage extends StatelessWidget {
           body: Padding(
             padding: isLargeScreen
                 ? EdgeInsets.symmetric(
-                    horizontal: constraints.maxWidth * 0.2, // 20% padding on each side
-                    vertical: 16.0, // Adjust as needed
+                    horizontal: constraints.maxWidth * 0.2,
+                    vertical: 16.0,
                   )
-                : EdgeInsets.all(16.0), // Default padding for small screens
+                : EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -197,14 +203,14 @@ class SpaceTypePage extends StatelessWidget {
                     children: [
                       TextButton(
                         onPressed: () {
-                         Get.back(); 
+                          Get.back();
                         },
                         child: Text("Previous"),
                       ),
                       ElevatedButton(
                         onPressed: () {
                           // Navigate to the next page
-                          Get.to(()=>SpaceDetailsPage());
+                          Get.to(() => SpaceDetailsPage());
                         },
                         child: Text("Next"),
                       ),
@@ -220,15 +226,17 @@ class SpaceTypePage extends StatelessWidget {
   }
 
   Widget buildOption(String title, String subtitle, IconData icon) {
+    bool isSelected = selectedOptions.isNotEmpty && selectedOptions.containsKey(title);
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
+          border: Border.all(color: isSelected ? Colors.blue : Colors.grey),
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: ListTile(
-          leading: Icon(icon, size: 40, color: Colors.blue),
+          leading: Icon(icon, size: 40, color: isSelected ? Colors.blue : Colors.grey),
           title: Text(
             title,
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -238,10 +246,68 @@ class SpaceTypePage extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
           ),
           onTap: () {
-            // Select this option
+            showSpaceTypeDialog(title);
           },
         ),
       ),
+    );
+  }
+
+  void showSpaceTypeDialog(String title) {
+    String? selectedType;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            "Select Space Type",
+            style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min, // Adjusts the dialog size to fit the content
+              children: <String>['private villa', 'Apartment', 'Hotel','Townhouse villa', 'Other', 'Camping','Resort', 'Penthouse', 'Hostel','Houseboat', 'Condo', 'Share house'] // Replace with items from DB later
+                  .map((String value) {
+                return ListTile(
+                  title: Text(
+                    value,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: value == selectedType ? Colors.blue : Colors.black87, // Highlight selected item
+                    ),
+                  ),
+                  onTap: () {
+                    setState(() {
+                      // Clear any previous selection
+                      selectedOptions.clear();
+            
+                      // Set the new selection
+                      selectedType = value;
+                      selectedOptions[title] = value;
+                    });
+                    Navigator.of(context).pop(); // Close the dialog
+                    print(selectedOptions);
+                  },
+                  leading: Icon(
+                    value == selectedType ? Icons.check_circle : Icons.circle,
+                    color: value == selectedType ? Colors.blue : Colors.grey,
+                  ), // Add a check icon to indicate selection
+                );
+              }).toList(),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Cancel"),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -454,54 +520,55 @@ class _AmenitiesSelectionPageState extends State<AmenitiesSelectionPage> {
             ),
             SizedBox(height: 20),
             Expanded(
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: isLargeScreen ? 4 : 3,
-                  crossAxisSpacing: 12.0,  // Reduced spacing for more compact design
-                  mainAxisSpacing: 12.0,
-                  childAspectRatio: 1.0,  // Adjusted aspect ratio to reduce the size
-                ),
-                itemCount: amenities.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        amenities[index].isSelected = !amenities[index].isSelected;
-                      });
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: amenities[index].isSelected ? Colors.blue.shade100 : Colors.white,
-                        borderRadius: BorderRadius.circular(8.0),
-                        border: Border.all(
-                          color: amenities[index].isSelected ? Colors.blue : Colors.grey,
-                        ),
-                      ),
-                      padding: EdgeInsets.all(8.0),  // Added padding for better layout
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            amenities[index].icon,
-                            size: 30,  // Reduced icon size
-                            color: amenities[index].isSelected ? Colors.blue : Colors.grey,
-                          ),
-                          SizedBox(height: 8.0),
-                          Text(
-                            amenities[index].name,
-                            style: TextStyle(
-                              fontSize: 14,  // Reduced text size
-                              color: amenities[index].isSelected ? Colors.blue : Colors.black,
-                            ),
-                            textAlign: TextAlign.center,  // Ensures the text is centered
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
+  child: GridView.builder(
+    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+      maxCrossAxisExtent: isLargeScreen ? 160.0 : 150.0,  // Reduce max width for larger screens
+      crossAxisSpacing: 12.0,
+      mainAxisSpacing: 12.0,
+      childAspectRatio: isLargeScreen ? 1.1 : 1.0,  // Slight adjustment for large screens
+    ),
+    itemCount: amenities.length,
+    itemBuilder: (context, index) {
+      return GestureDetector(
+        onTap: () {
+          setState(() {
+            amenities[index].isSelected = !amenities[index].isSelected;
+          });
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: amenities[index].isSelected ? Colors.blue.shade100 : Colors.white,
+            borderRadius: BorderRadius.circular(8.0),
+            border: Border.all(
+              color: amenities[index].isSelected ? Colors.blue : Colors.grey,
             ),
+          ),
+          padding: EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                amenities[index].icon,
+                size: 28,  // Slightly reduce icon size for large screens
+                color: amenities[index].isSelected ? Colors.blue : Colors.grey,
+              ),
+              SizedBox(height: 8.0),
+              Text(
+                amenities[index].name,
+                style: TextStyle(
+                  fontSize: 13,  // Slightly reduce text size for large screens
+                  color: amenities[index].isSelected ? Colors.blue : Colors.black,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  ),
+),
+
             SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

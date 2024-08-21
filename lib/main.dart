@@ -1,12 +1,24 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart'; // Import the Get package
 import 'package:portugalgo/auth/forget_password.dart';
 import 'package:portugalgo/auth/login.dart';
-import 'package:portugalgo/auth/signup.dart';
+import 'package:portugalgo/auth/signup/signup.dart';
 
+import 'auth/authentication/auth_repository.dart';
+import 'firebase_options.dart';
 import 'theme.dart';
 
-void main() {
+Future<void> main() async {
+  final WidgetsBinding widgetsBinding=WidgetsFlutterBinding.ensureInitialized();
+  
+
+ 
+
+await Firebase.initializeApp(
+
+   options: DefaultFirebaseOptions.currentPlatform,
+ ).then((FirebaseApp value) => Get.put(AuthenticationRepository()));
   runApp(const MyApp());
 }
 

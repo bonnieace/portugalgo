@@ -7,11 +7,12 @@ import 'package:portugalgo/profile/settings/sectionheading.dart';
 import 'package:http/http.dart' as http;
 
 import '../../appbar/appbar.dart';
-import '../../auth/login.dart';
+import '../../auth/user.dart';
 import '../../constants/colors.dart';
 import '../../constants/image_strings.dart';
 import '../../constants/sizes.dart';
 import '../../helpers/helper_functions.dart';
+import '../../auth/login.dart';
 
 class ProfileScreen extends StatelessWidget {
   final GoogleSignInAccount? googleuser;

@@ -5,15 +5,16 @@ import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/response/response.dart';
 import 'package:http/http.dart' as http;
 import 'package:iconsax/iconsax.dart';
-import 'package:portugalgo/auth/verify_email.dart';
+import 'package:portugalgo/auth/verifyemail/verify_email.dart';
 
-import '../constants/colors.dart';
-import '../constants/sizes.dart';
-import '../constants/text_strings.dart';
-import '../helpers/helper_functions.dart';
-import '../validators/validation.dart';
-import 'form_divider..dart';
-import 'socialbuttons.dart';
+import '../../constants/colors.dart';
+import '../../constants/sizes.dart';
+import '../../constants/text_strings.dart';
+import '../../helpers/helper_functions.dart';
+import '../../validators/validation.dart';
+import '../form_divider..dart';
+import '../socialbuttons.dart';
+import 'signup_controller.dart';
 
 
 class SignUpScreen extends StatelessWidget {
@@ -97,6 +98,7 @@ class _TsSignUpFormState extends State<TsSignUpForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  
 
   bool _isLoading = false;
 
@@ -157,15 +159,17 @@ class _TsSignUpFormState extends State<TsSignUpForm> {
 
   @override
   Widget build(BuildContext context) {
+    final controller=Get.put(SignUpcontroller());
+
     return Form(
-      key: _formKey,
+      key: controller.signupFormKey,
       child: Column(
         children: [
           Row(
             children: [
               Expanded(
                 child: TextFormField(
-                  controller: _firstNameController,
+                  controller: controller.firstname,
                   decoration: const InputDecoration(
                     labelText: TTexts.firstName,
                     prefixIcon: Icon(Iconsax.user),
@@ -175,7 +179,7 @@ class _TsSignUpFormState extends State<TsSignUpForm> {
               const SizedBox(width: TSizes.spaceBtwInputFields),
               Expanded(
                 child: TextFormField(
-                  controller: _lastNameController,
+                  controller: controller.lastName,
                   validator: (value) =>
                       TValidator.validateEmptyText('Last Name', value),
                   decoration: const InputDecoration(
@@ -188,7 +192,7 @@ class _TsSignUpFormState extends State<TsSignUpForm> {
           ),
           const SizedBox(height: TSizes.spaceBtwInputFields),
           TextFormField(
-            controller: _userNameController,
+            controller: controller.username,
             validator: (value) =>
                 TValidator.validateEmptyText('UserName', value),
             decoration: const InputDecoration(
@@ -198,7 +202,7 @@ class _TsSignUpFormState extends State<TsSignUpForm> {
           ),
           const SizedBox(height: TSizes.spaceBtwInputFields),
           TextFormField(
-            controller: _emailController,
+            controller: controller.email,
             validator: (value) => TValidator.validateEmail(value),
             decoration: const InputDecoration(
               labelText: TTexts.email,
@@ -207,7 +211,7 @@ class _TsSignUpFormState extends State<TsSignUpForm> {
           ),
           const SizedBox(height: TSizes.spaceBtwInputFields),
           TextFormField(
-            controller: _phoneController,
+            controller: controller.phoneNumber,
             validator: (value) => TValidator.validatePhoneNumber(value),
             decoration: const InputDecoration(
               labelText: TTexts.phoneNo,
@@ -216,7 +220,7 @@ class _TsSignUpFormState extends State<TsSignUpForm> {
           ),
           const SizedBox(height: TSizes.spaceBtwInputFields),
           TextFormField(
-            controller: _passwordController,
+            controller: controller.password,
             validator: (value) => TValidator.validatePassword(value),
             decoration: InputDecoration(
               labelText: TTexts.password,
@@ -235,7 +239,9 @@ class _TsSignUpFormState extends State<TsSignUpForm> {
               : SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: _submitForm,
+                    onPressed:(){controller.signup();
+                    
+                    },
                     child: const Text(TTexts.createAccount),
                   ),
                 ),
