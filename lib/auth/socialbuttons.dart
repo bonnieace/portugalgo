@@ -33,6 +33,8 @@ class Footer extends StatelessWidget {
               backgroundColor: Colors.white, // Button background color
               alignment: Alignment.centerLeft, // Align content to the start
             ),
+        // onPressed:()=> controller.GoogleSignIn,
+
             onPressed: googlesignin,
             icon: const Image(
               width: TSizes.iconMd,

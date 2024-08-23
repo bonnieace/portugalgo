@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:portugalgo/auth/signup/signup.dart';
+import 'package:portugalgo/auth/verifyemail/verify_email.dart';
 import 'package:portugalgo/profile/settings/settings.dart';
 import 'package:http/http.dart' as http;
 
@@ -181,11 +182,7 @@ class loginForm extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () => _login(
-                  context,
-                  emailController.text,
-                  passwordController.text,
-                ),
+                onPressed: () => checkEmailVerification(context,emailController.text,passwordController.text),
                 child: const Text(TTexts.signIn),
               ),
             ),
@@ -203,8 +200,51 @@ class loginForm extends StatelessWidget {
     );
   }
 }
+ Future<void> checkEmailVerification(BuildContext context, String email, String password) async {
+
+  final url = 'https://api.global-software.org/management/user/verifyuser?email=$email';
+
+  try {
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Api-Key': '6b21ac76-6753-4fc7-b5f8-2e93881b577c',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final String responseBody = response.body.trim();  // Trim to remove any extra whitespace
+
+      if (responseBody == 'True') {
+        // If verified, proceed to login
+        await _login(context, email, password);
+      } else if (responseBody == 'False') {
+        // If not verified, navigate to the verification screen
+      TLoaders.errorSnackBar(title: 'Account error',message: 'Unverified account detected');
+      } else {
+        // Unexpected response content
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Unexpected response: $responseBody')),
+        );
+      }
+    } else {
+      // Handle failure
+     TLoaders.errorSnackBar(title: 'Oh snap!',message: 'Verification check failed. Please try again.');
+    }
+  } catch (e) {
+    // Handle exceptions (network errors, etc.)
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('An error occurred: $e')),
+    );
+    print(e);
+  }
+}
 
 Future<void> _login(BuildContext context, String email, String password) async {
+      TLoaders.successSnackBar(title: 'Just a minute!',message: 'Let us verify your account');
+
+
   final url = 'https://api.global-software.org/management/user/get?email=$email&password=$password';
 
   try {
@@ -259,10 +299,10 @@ Future<void> _login(BuildContext context, String email, String password) async {
     }
   } catch (e) {
     // Handle exceptions (network errors, JSON parsing errors, etc.)
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('An error occurred: $e')),
-      
-    );
+    TLoaders.errorSnackBar(title: "Oh Snap!",message: e);
     print(e);
   }
+
+ 
+
 }
